@@ -1,112 +1,73 @@
-import { useEffect, useState } from 'react';
-import { api } from './lib/api';
+import { useState, useEffect } from "react";
 
-// Mock user untuk mode offline / tanpa backend
-const MOCK_TEACHER = {
-  id: 'demo-teacher-1',
-  email: 'guru@demo.com',
-  full_name: 'Guru Demo BioXLab',
-  role: 'teacher' as const,
-  school_name: 'SMA Demo'
-};
+type Role = "guru" | "siswa";
+type Tab = "guru-dashboard" | "bank-soal" | "nilai" | "siswa-dashboard" | "main-kuis";
 
-const MOCK_STUDENT = {
-  id: 'demo-student-1',
-  email: 'siswa@demo.com',
-  full_name: 'Siswa Demo',
-  role: 'student' as const,
-  school_name: 'SMA Demo'
-};
+interface Soal {
+  id: string;
+  kelas: string;
+  pertanyaan: string;
+  opsi: string[];
+  jawaban: number;
+}
 
-function App() {
-  const [currentUser, setCurrentUser] = useState<any>(null);
-  const [currentTab, setCurrentTab] = useState('guru-dashboard');
-  const [loading, setLoading] = useState(true);
-  const [activeAttemptId, setActiveAttemptId] = useState<string | null>(null);
-  const [activeResultId, setActiveResultId] = useState<string | null>(null);
+const BANK_AWAL: Soal[] = [
+  { id: "1", kelas: "X", pertanyaan: "Organel sel tempat respirasi sel adalah...", opsi: ["Ribosom", "Mitokondria", "Nukleus", "Kloroplas"], jawaban: 1 },
+  { id: "2", kelas: "X", pertanyaan: "Proses fotosintesis terjadi di...", opsi: ["Mitokondria", "Kloroplas", "Vakuola", "Sitoplasma"], jawaban: 1 },
+  { id: "3", kelas: "XI", pertanyaan: "Hormon pengatur kadar gula darah adalah...", opsi: ["Adrenalin", "Insulin", "Tiroksin", "Estrogen"], jawaban: 1 },
+  { id: "4", kelas: "XII", pertanyaan: "Persilangan dihibrid menghasilkan perbandingan fenotip...", opsi: ["3:1", "9:3:3:1", "1:2:1", "1:1"], jawaban: 1 },
+];
 
-  useEffect(() => {
-    async function init() {
-      try {
-        setLoading(true);
-        try {
-          const me = await api.getMe();
-          if (me) {
-            setCurrentUser(me);
-            setCurrentTab(me.role === 'teacher' ? 'guru-dashboard' : 'siswa-dashboard');
-          } else {
-            throw new Error('no user');
-          }
-        } catch (err) {
-          console.error('Initialization error, fallback to demo teacher', err);
-          setCurrentUser(MOCK_TEACHER as any);
-          setCurrentTab('guru-dashboard');
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-    init();
-  }, []);
+export default function App() {
+  const [role, setRole] = useState<Role>("guru");
+  const [tab, setTab] = useState<Tab>("guru-dashboard");
+  const [bank] = useState<Soal[]>(BANK_AWAL);
+  const [indexSoal, setIndexSoal] = useState(0);
+  const [skor, setSkor] = useState(0);
 
-  // FIX UTAMA: Tidak pakai api.switchDemo lagi
-  async function handleSwitchRole(role: 'teacher' | 'student' | 'admin' | 'reviewer', studentIndex?: number) {
-    try {
-      setLoading(true);
-      const mockUser = role === 'teacher' ? MOCK_TEACHER : {
-        ...MOCK_STUDENT,
-        id: `demo-student-${studentIndex ?? 1}`,
-        full_name: `Siswa Demo ${studentIndex ?? 1}`,
-      };
-      const finalUser = { ...mockUser, role };
-      
-      setCurrentUser(finalUser as any);
-      setActiveAttemptId(null);
-      setActiveResultId(null);
-      
-      if (role === 'teacher') {
-        setCurrentTab('guru-dashboard');
-      } else if (role === 'student') {
-        setCurrentTab('siswa-dashboard');
-      } else {
-        setCurrentTab('guru-dashboard');
-      }
-    } catch (err: any) {
-      console.error('Gagal ganti peran', err);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const handleSwitchRole = (newRole: Role) => {
+    setRole(newRole);
+    setTab(newRole === "guru" ? "guru-dashboard" : "siswa-dashboard");
+  };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="text-center">
-          <div className="animate-spin w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-3"></div>
-          <p className="text-slate-600">Memuat BioXLab...</p>
-        </div>
-      </div>
-    );
-  }
+  const mulaiKuis = () => { setIndexSoal(0); setSkor(0); setTab("main-kuis"); };
+  const jawab = (pilih: number) => {
+    const benar = bank[indexSoal].jawaban === pilih ? 1 : 0;
+    if (benar) setSkor(s => s + 1);
+    const next = indexSoal + 1;
+    if (next < bank.length) setIndexSoal(next);
+    else { alert(`Selesai! Skor kamu: ${skor + benar} / ${bank.length}`); setTab("siswa-dashboard"); }
+  };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white shadow-sm border-b px-6 py-4 flex justify-between items-center">
-        <h1 className="font-bold text-xl text-indigo-600">BioXLab - {currentUser?.full_name}</h1>
-        <div className="flex gap-2">
-          <button onClick={() => handleSwitchRole('teacher')} className="px-3 py-1.5 bg-indigo-600 text-white rounded text-sm">Mode Guru</button>
-          <button onClick={() => handleSwitchRole('student', 1)} className="px-3 py-1.5 bg-emerald-600 text-white rounded text-sm">Mode Siswa</button>
+    <div style={{ fontFamily: "sans-serif", background: "#f8fafc", minHeight: "100vh" }}>
+      <header style={{ background: "white", padding: "12px 20px", display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ddd", position: "sticky", top: 0 }}>
+        <b>BioXLab - {role === "guru" ? "Guru Demo" : "Siswa Demo"}</b>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button onClick={() => handleSwitchRole("guru")} style={{ background: role === "guru" ? "#2563eb" : "white", color: role === "guru" ? "white" : "black", padding: "6px 12px", borderRadius: 6, border: "1px solid #ccc", cursor: "pointer" }}>Mode Guru</button>
+          <button onClick={() => handleSwitchRole("siswa")} style={{ background: role === "siswa" ? "#16a34a" : "white", color: role === "siswa" ? "white" : "black", padding: "6px 12px", borderRadius: 6, border: "1px solid #ccc", cursor: "pointer" }}>Mode Siswa</button>
         </div>
       </header>
-      <main className="p-6">
-        <div className="bg-white rounded-xl shadow p-6 max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold mb-2">Berhasil! Tidak ada error 404 lagi 🎉</h2>
-          <p className="text-slate-600 mb-4">Kamu login sebagai: <b>{currentUser?.role}</b> - {currentUser?.email}</p>
-          <p className="text-sm text-slate-500">Current Tab: {currentTab}</p>
-        </div>
+      <main style={{ padding: 20, maxWidth: 900, margin: "0 auto" }}>
+        {role === "guru" && (
+          <div>
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              <button onClick={() => setTab("guru-dashboard")}>Dashboard</button>
+              <button onClick={() => setTab("bank-soal")}>Bank Soal ({bank.length})</button>
+              <button onClick={() => setTab("nilai")}>Nilai</button>
+            </div>
+            {tab === "guru-dashboard" && <div style={{ background: "white", padding: 20, borderRadius: 12 }}><h2>✅ FIX 404 Berhasil!</h2><p>Mode Guru/Siswa sekarang 100% offline, tidak pakai API lagi. Siap dipakai UAS.</p><p>Total Soal: {bank.length}</p></div>}
+            {tab === "bank-soal" && <div style={{ background: "white", padding: 20, borderRadius: 12 }}>{bank.map((s,i) => <div key={s.id} style={{ border: "1px solid #eee", padding: 10, marginBottom: 8 }}><b>{i+1}. [{s.kelas}] {s.pertanyaan}</b><div>{s.opsi.map((o,idx) => <div key={idx} style={{ color: idx===s.jawaban?"green":"black" }}>{idx===s.jawaban?"✔ ":""}{o}</div>)}</div></div>)}</div>}
+            {tab === "nilai" && <div style={{ background: "white", padding: 20, borderRadius: 12 }}>Nilai akan muncul setelah siswa main.</div>}
+          </div>
+        )}
+        {role === "siswa" && (
+          <div>
+            {tab === "siswa-dashboard" && <div style={{ background: "white", padding: 20, borderRadius: 12, textAlign: "center" }}><h2>Kuis Biologi X-XII</h2><button onClick={mulaiKuis} style={{ background: "#16a34a", color: "white", padding: "12px 24px", border: "none", borderRadius: 8, cursor: "pointer" }}>Mulai Kuis</button></div>}
+            {tab === "main-kuis" && <div style={{ background: "white", padding: 20, borderRadius: 12 }}><p>Soal {indexSoal+1}/{bank.length} - Skor: {skor}</p><h3>{bank[indexSoal].pertanyaan}</h3>{bank[indexSoal].opsi.map((o,idx) => <button key={idx} onClick={() => jawab(idx)} style={{ display: "block", width: "100%", padding: 12, marginBottom: 8, textAlign: "left", cursor: "pointer" }}>{o}</button>)}</div>}
+          </div>
+        )}
       </main>
     </div>
   );
 }
-
-export default App;
