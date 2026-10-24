@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  body {
+    font-family: var(--font-sans);
+    color: #0f172a;
+    background-color: #fafbfc;
+    background-image: 
+      radial-gradient(at 10% 8%, rgba(239, 68, 68, 0.05) 0px, transparent 45%),
+      radial-gradient(at 90% 12%, rgba(74, 222, 128, 0.08) 0px, transparent 40%),
+      radial-gradient(at 50% 60%, rgba(255, 255, 255, 0.9) 0px, transparent 60%),
+      radial-gradient(at 20% 90%, rgba(34, 197, 94, 0.05) 0px, transparent 50%),
+      radial-gradient(at 80% 85%, rgba(220, 38, 38, 0.04) 0px, transparent 45%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Custom Red, White & Light-Green Theme Utilities */
+.bg-red-bio-hero {
+  background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 30%, #b91c1c 70%, #dc2626 100%);
+}
+
+.bg-red-white-lightgreen {
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 50%, #f0fdf4 100%);
+}
+
+.bg-lightgreen-accent {
+  background: linear-gradient(135deg, #86efac 0%, #4ade80 50%, #22c55e 100%);
+}
+
+.bg-red-accent {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
+}
+
+.glow-red {
+  box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.25), 0 8px 10px -6px rgba(220, 38, 38, 0.15);
+}
+
+.glow-red-subtle {
+  box-shadow: 0 4px 15px -3px rgba(239, 68, 68, 0.15);
+}
+
+.glow-lightgreen-subtle {
+  box-shadow: 0 4px 15px -3px rgba(74, 222, 128, 0.25);
+}
+
+.border-red-white-green {
+  border-image: linear-gradient(to right, #dc2626, #ffffff, #4ade80) 1;
+}

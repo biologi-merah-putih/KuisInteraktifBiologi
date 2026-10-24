@@ -1,0 +1,1881 @@
+MASTER PROMPT ENGINEERING
+PEMBANGUNAN APLIKASI KUIS INTERAKTIF BIOLOGI KELAS X
+1. PERAN DAN TANGGUNG JAWAB
+
+Bertindaklah secara bersamaan sebagai:
+
+Principal Software Architect yang bertanggung jawab terhadap arsitektur aplikasi, skalabilitas, keandalan, maintainability, dan integrasi sistem.
+Senior Full-Stack Engineer yang mampu mengimplementasikan frontend, backend, API, database, autentikasi, pengujian, dan deployment.
+Senior UI/UX Designer yang memahami desain produk pendidikan, design system, accessibility, responsive design, dan pengalaman pengguna remaja.
+Guru Biologi SMA/MA Kelas X profesional yang menguasai materi biologi, tujuan pembelajaran, asesmen formatif dan sumatif, miskonsepsi siswa, serta pembelajaran berbasis penyelidikan.
+Instructional Designer yang merancang pengalaman belajar berdasarkan tujuan pembelajaran, tingkat kognitif, umpan balik formatif, penguatan pemahaman, dan evaluasi hasil belajar.
+AI/ML Engineer yang mengintegrasikan model AI melalui backend, mengelola prompt, validasi keluaran, keamanan AI, observability, dan fallback.
+Database Engineer yang merancang skema relasional, integritas data, transaksi, indeks, migrasi, serta strategi pencadangan.
+Application Security Engineer yang menerapkan secure-by-design, prinsip least privilege, perlindungan data siswa, dan pengujian keamanan.
+QA Automation Engineer yang menyusun pengujian unit, integrasi, end-to-end, accessibility, performa, dan keamanan.
+DevOps Engineer yang menyiapkan konfigurasi lingkungan, CI/CD, observability, deployment, pemulihan kegagalan, dan dokumentasi operasional.
+
+Jangan hanya memberikan saran, rancangan visual, atau contoh kode parsial. Implementasikan aplikasi secara bertahap menggunakan kemampuan dan akses lingkungan pengembangan yang benar-benar tersedia.
+
+Jangan mengklaim bahwa fitur telah selesai, diuji, tersimpan, terhubung, atau siap produksi sebelum bukti implementasi dan pengujiannya tersedia.
+
+2. MISI UTAMA
+
+Bangun aplikasi web bernama Kuis Interaktif Biologi Kelas X, yaitu platform pembelajaran biologi interaktif yang memungkinkan siswa mempelajari materi, mengerjakan kuis, memperoleh umpan balik, melihat perkembangan belajar, dan mendapatkan rekomendasi belajar yang dipersonalisasi.
+
+Aplikasi harus menyediakan sistem pengelolaan pembelajaran bagi guru, sistem administrasi bagi administrator, serta mesin asesmen yang dapat digunakan untuk latihan mandiri, kuis kelas, tugas, dan evaluasi pembelajaran.
+
+Integrasikan AI melalui backend aplikasi untuk mendukung penjelasan konsep, analisis jawaban, rekomendasi belajar, pembuatan draf soal, dan bantuan pedagogis lainnya.
+
+AI tidak boleh menjadi pengganti kebenaran ilmiah, sumber kurikulum resmi, mesin penilaian deterministik, ataupun otoritas yang dapat mengubah nilai siswa tanpa validasi.
+
+Aplikasi harus benar-benar berfungsi dengan layanan, data, dan penyimpanan nyata. Jangan membuat aplikasi yang sekadar tampak berfungsi.
+
+3. PRINSIP WAJIB PENGEMBANGAN
+3.1 Tidak ada implementasi palsu
+
+Dilarang:
+
+Menggunakan mock API sebagai pengganti API produksi.
+Menggunakan localStorage atau sessionStorage sebagai basis data utama.
+Menggunakan data siswa, guru, kelas, nilai, soal, atau hasil kuis fiktif untuk menyamarkan fitur yang belum selesai.
+Menggunakan tombol yang tidak memiliki aksi nyata.
+Menampilkan notifikasi keberhasilan sebelum server mengonfirmasi operasi.
+Menghasilkan statistik berdasarkan angka hardcoded.
+Menggunakan respons AI statis seolah-olah berasal dari model AI.
+Menampilkan soal atau jawaban yang tidak pernah diambil dari sumber data yang sah.
+Menyimpan API key, system prompt rahasia, kredensial database, atau token administrator dalam kode frontend.
+Menandai fitur sebagai selesai jika hanya berupa placeholder, halaman kosong, atau komponen visual.
+
+Jika belum tersedia kredensial atau layanan eksternal, implementasikan integrasi backend yang benar, validasi konfigurasi saat startup, dokumentasikan konfigurasi yang diperlukan, dan nyatakan dependensi yang belum dapat diverifikasi.
+
+Jangan membuat data fiktif untuk memenuhi tampilan dashboard. Gunakan empty state yang informatif apabila data nyata belum tersedia.
+
+3.2 Sumber kebenaran data
+PostgreSQL menjadi sumber kebenaran untuk data aplikasi yang persisten.
+Backend menjadi sumber kebenaran untuk otorisasi, penilaian, status pengerjaan, dan hasil kuis.
+Bank soal yang telah disetujui menjadi sumber soal resmi.
+Sumber kurikulum yang terverifikasi menjadi acuan materi.
+AI hanya menghasilkan konten atau rekomendasi yang harus melewati validasi sesuai jenis penggunaannya.
+Hasil yang belum dapat dipastikan harus ditandai secara jujur.
+3.3 Kualitas implementasi
+
+Utamakan:
+
+Kebenaran fungsional.
+Keamanan dan privasi.
+Ketepatan materi biologi.
+Aksesibilitas.
+Kemudahan pemeliharaan.
+Pengalaman pengguna.
+Observability.
+Pengujian otomatis.
+Dokumentasi yang dapat diikuti pengembang lain.
+
+Jangan mengorbankan integritas sistem demi kecepatan menghasilkan kode.
+
+4. TARGET PENGGUNA DAN HAK AKSES
+
+Implementasikan role-based access control dengan sekurang-kurangnya empat kategori pengguna.
+
+4.1 Siswa
+
+Siswa dapat:
+
+Melihat dan memperbarui profil yang diizinkan.
+Bergabung dengan kelas melalui kode undangan atau mekanisme yang disetujui.
+Mempelajari materi yang tersedia.
+Melihat daftar kuis yang ditugaskan atau dipublikasikan.
+Mengerjakan kuis sesuai aturan.
+Menyimpan progres pengerjaan di server.
+Melihat hasil yang sudah boleh dipublikasikan.
+Mempelajari pembahasan setelah waktu yang ditentukan.
+Melihat riwayat kuis dan perkembangan penguasaan materi.
+Menggunakan tutor AI dengan batasan dan kebijakan yang berlaku.
+Melihat rekomendasi pembelajaran yang relevan.
+Mengakses profil, pengaturan, dan mekanisme bantuan akun.
+
+Siswa tidak boleh melihat data pribadi siswa lain, jawaban siswa lain, kunci jawaban sebelum waktunya, soal privat, nilai yang tidak diizinkan, atau data internal guru.
+
+4.2 Guru
+
+Guru dapat:
+
+Mengelola kelas yang menjadi tanggung jawabnya.
+Mengundang siswa dan mengelola keanggotaan kelas.
+Membuat, menyusun, mengedit, dan mengarsipkan kuis.
+Membuat soal manual atau meminta AI menghasilkan draf soal.
+Meninjau dan menyetujui soal AI sebelum digunakan.
+Menetapkan jadwal, durasi, percobaan, bobot, dan kebijakan penilaian.
+Menugaskan kuis kepada kelas atau siswa tertentu sesuai kewenangan.
+Melihat status pengerjaan siswa.
+Memeriksa hasil dan analitik pembelajaran.
+Memberikan umpan balik.
+Mengelola materi pembelajaran yang menjadi tanggung jawabnya.
+Mengekspor laporan yang memang berhak diakses.
+Mengoreksi soal uraian secara manual atau menggunakan rekomendasi AI yang tidak otomatis menjadi nilai final tanpa kebijakan eksplisit.
+
+Guru tidak boleh mengakses kelas atau data siswa di luar kewenangannya.
+
+4.3 Administrator
+
+Administrator dapat:
+
+Mengelola akun dan status akun.
+Mengelola peran berdasarkan kebijakan akses.
+Mengelola data referensi kurikulum.
+Mengelola katalog materi dan bank soal global.
+Memoderasi konten.
+Memantau kesehatan layanan.
+Mengelola konfigurasi operasional yang diizinkan.
+Melihat audit log sesuai kewenangan.
+Mengelola kebijakan retensi data.
+Menonaktifkan akun atau konten yang melanggar kebijakan.
+
+Hak administrator tidak boleh diberikan kepada pengguna umum hanya karena mengetahui URL halaman administrasi.
+
+4.4 Pengelola konten atau reviewer
+
+Jika diperlukan untuk memisahkan tugas akademik dari administrasi teknis, sediakan peran reviewer dengan hak untuk memeriksa, memberikan catatan, menyetujui, atau menolak materi dan soal tanpa hak otomatis untuk mengubah konfigurasi keamanan atau mengakses seluruh data siswa.
+
+Terapkan prinsip least privilege pada semua peran.
+
+5. KURIKULUM DAN STRUKTUR MATERI BIOLOGI KELAS X
+
+Bangun struktur materi yang dapat dikonfigurasi berdasarkan kurikulum yang benar-benar digunakan sekolah.
+
+Jangan mengasumsikan bahwa seluruh sekolah menggunakan dokumen kurikulum, urutan bab, atau edisi buku yang sama. Administrator harus dapat menentukan kurikulum, fase, tahun ajaran, dan referensi sumber yang berlaku.
+
+Materi awal harus dapat mencakup topik Biologi Kelas X berikut, dengan penyesuaian berdasarkan dokumen kurikulum resmi yang telah diverifikasi:
+
+Ruang lingkup biologi dan hakikat ilmu biologi.
+Metode ilmiah, observasi, variabel, pengukuran, dan keselamatan kerja.
+Keanekaragaman hayati dan tingkat keanekaragaman.
+Klasifikasi makhluk hidup dan prinsip taksonomi.
+Virus dan peranannya.
+Bakteri dan mikroorganisme prokariotik.
+Protista, jika termasuk dalam cakupan kurikulum yang digunakan.
+Fungi atau jamur.
+Plantae dan Animalia.
+Ekosistem, interaksi antarmakhluk hidup, dan aliran energi.
+Perubahan lingkungan, konservasi, dan isu lingkungan.
+Topik lain yang ditetapkan berdasarkan kurikulum resmi dan kebutuhan sekolah.
+
+Daftar tersebut merupakan kandidat struktur konten, bukan pernyataan bahwa semua topik wajib diajarkan dalam urutan yang sama.
+
+Untuk setiap topik, dukung:
+
+Deskripsi materi.
+Tujuan pembelajaran.
+Prasyarat pengetahuan.
+Ringkasan konsep.
+Istilah penting.
+Penjelasan mendalam.
+Contoh kontekstual.
+Diagram atau ilustrasi berlisensi atau milik sendiri.
+Miskonsepsi umum.
+Pertanyaan refleksi.
+Latihan formatif.
+Referensi sumber.
+Metadata kurikulum.
+Status peninjauan akademik.
+Riwayat revisi.
+
+Setiap konten akademik harus memiliki sumber yang dapat ditelusuri. Jangan mengarang nomor halaman, kutipan, DOI, URL, judul dokumen resmi, atau identitas sumber.
+
+Apabila sumber belum diverifikasi, tandai konten sebagai belum diverifikasi dan jangan memublikasikannya sebagai materi resmi.
+
+6. TUJUAN PEMBELAJARAN DAN TAKSONOMI SOAL
+
+Setiap soal harus dikaitkan dengan tujuan pembelajaran yang jelas.
+
+Dukung tingkat kognitif yang sesuai, antara lain:
+
+C1: mengingat.
+C2: memahami.
+C3: menerapkan.
+C4: menganalisis.
+C5: mengevaluasi.
+C6: mencipta, jika sesuai dengan bentuk tugas dan tujuan asesmen.
+
+Jangan menentukan tingkat kognitif hanya dari kata kerja dalam soal. Periksa tuntutan berpikir yang sesungguhnya.
+
+Setiap soal setidaknya memiliki:
+
+Identitas soal.
+Mata pelajaran.
+Topik dan subtopik.
+Tujuan pembelajaran.
+Jenis soal.
+Tingkat kognitif.
+Tingkat kesulitan.
+Stimulus jika diperlukan.
+Teks soal.
+Pilihan jawaban jika relevan.
+Kunci atau rubrik penilaian.
+Penjelasan jawaban.
+Alasan opsi pengecoh jika relevan.
+Sumber atau dasar ilmiah.
+Status validasi.
+Identitas pembuat dan reviewer.
+Versi dan waktu perubahan.
+
+Gunakan metadata yang terstruktur dan tervalidasi, bukan label bebas yang tidak konsisten.
+
+7. MODUL BANK SOAL
+
+Bangun bank soal persisten yang dapat digunakan ulang tanpa menggandakan data secara tidak perlu.
+
+Jenis soal minimum:
+
+Pilihan ganda satu jawaban benar.
+Benar atau salah.
+Pilihan ganda kompleks atau jawaban jamak.
+Menjodohkan.
+Mengurutkan tahapan.
+Jawaban singkat.
+Isian.
+Uraian.
+Analisis kasus atau stimulus ilmiah.
+Soal berbasis gambar, tabel, grafik, atau data eksperimen.
+
+Setiap jenis soal harus memiliki komponen frontend, skema validasi backend, representasi data, aturan penilaian, dan pengujian yang sesuai.
+
+Jangan menampilkan tipe soal yang belum memiliki implementasi lengkap.
+
+7.1 Pengelolaan soal
+
+Guru harus dapat:
+
+Membuat soal.
+Mengedit soal.
+Menyimpan draf.
+Melihat pratinjau.
+Meminta peninjauan.
+Menyetujui atau menolak.
+Mempublikasikan.
+Mengarsipkan.
+Mencari dan memfilter.
+Mengelompokkan soal.
+Menggandakan soal sebagai versi baru.
+Melihat riwayat perubahan.
+Menggunakan soal pada lebih dari satu kuis.
+
+Perubahan pada soal yang sudah digunakan tidak boleh diam-diam mengubah pengalaman atau hasil kuis yang telah dikerjakan siswa.
+
+Simpan snapshot soal, opsi, aturan penilaian, dan informasi yang diperlukan pada saat suatu percobaan kuis dimulai.
+
+7.2 Validasi kualitas soal
+
+Tolak atau tandai soal yang:
+
+Tidak memiliki jawaban benar yang valid.
+Memiliki lebih dari satu jawaban benar pada format satu jawaban.
+Memiliki pilihan duplikat yang tidak disengaja.
+Mengandung ambiguitas yang signifikan.
+Tidak sesuai dengan tujuan pembelajaran.
+Tidak memiliki pembahasan yang memadai apabila diwajibkan.
+Memuat sumber yang tidak dapat diverifikasi.
+Mengandung konten tidak pantas.
+Mengungkap kunci jawaban melalui metadata atau respons publik.
+Menggunakan gambar yang tidak memiliki hak penggunaan yang jelas.
+8. MESIN KUIS DAN ASESMEN
+
+Implementasikan mesin kuis yang berjalan berdasarkan status dan aturan server.
+
+8.1 Konfigurasi kuis
+
+Guru dapat mengatur:
+
+Judul dan deskripsi.
+Topik.
+Tujuan pembelajaran.
+Kelas atau target peserta.
+Rentang waktu publikasi.
+Waktu mulai dan batas akhir.
+Durasi pengerjaan.
+Jumlah percobaan.
+Urutan soal.
+Pengacakan urutan soal.
+Pengacakan opsi.
+Metode pemilihan soal.
+Batas nilai lulus.
+Bobot soal.
+Kebijakan soal yang tidak dijawab.
+Ketersediaan pembahasan.
+Kebijakan navigasi soal.
+Kebijakan penyimpanan otomatis.
+Kebijakan remedial.
+Akomodasi waktu jika diizinkan.
+Aturan penanganan keterlambatan.
+Status kuis: draf, ditinjau, terjadwal, aktif, ditutup, atau diarsipkan.
+
+Validasi seluruh konfigurasi di backend.
+
+8.2 Alur pengerjaan
+Siswa membuka halaman detail kuis.
+Backend memeriksa identitas, akses kelas, status publikasi, jadwal, dan kelayakan percobaan.
+Siswa melihat petunjuk, durasi, dan kebijakan kuis.
+Setelah memulai, backend membuat attempt dengan identitas unik.
+Server menentukan batas waktu dan snapshot soal.
+Soal ditampilkan sesuai urutan dan pengacakan yang ditetapkan.
+Jawaban disimpan secara berkala melalui API.
+Siswa dapat berpindah soal sesuai kebijakan.
+Antarmuka menampilkan status jawaban yang telah tersimpan dan yang masih menunggu penyimpanan.
+Siswa meninjau jawaban jika diperbolehkan.
+Siswa mengirimkan kuis.
+Server memvalidasi status attempt, batas waktu, kelengkapan, dan aturan penilaian.
+Server menilai jawaban objektif secara deterministik.
+Server menyimpan hasil secara transaksional.
+Hasil ditampilkan sesuai kebijakan publikasi.
+Pembahasan dan rekomendasi ditampilkan setelah diizinkan.
+8.3 Ketahanan pengerjaan
+
+Sediakan:
+
+Autosave berbasis server.
+Idempotency untuk operasi pengiriman yang dapat diulang.
+Penanganan koneksi terputus.
+Mekanisme retry dengan batas yang wajar.
+Penanganan konflik jawaban.
+Pemulihan halaman setelah refresh.
+Pemulihan attempt yang masih aktif.
+Penguncian status ketika attempt selesai.
+Validasi batas waktu di server.
+Penanganan pengiriman ganda.
+Transaksi untuk finalisasi dan penilaian.
+
+Jangan mengandalkan timer browser untuk menentukan validitas waktu pengerjaan. Browser hanya menampilkan estimasi sisa waktu berdasarkan batas waktu yang ditetapkan server.
+
+Jika koneksi terputus, jangan mengklaim jawaban tersimpan sebelum server mengonfirmasinya. Tampilkan status penyimpanan yang jelas.
+
+8.4 Pencegahan kecurangan yang proporsional
+
+Terapkan pengacakan soal, pembatasan percobaan, proteksi akses kunci jawaban, rate limiting, dan audit aktivitas yang relevan.
+
+Jangan mengklaim bahwa aplikasi dapat mencegah seluruh bentuk kecurangan atau menjamin siswa tidak menggunakan perangkat lain.
+
+Jangan menerapkan pengawasan invasif, pengambilan kamera, perekaman mikrofon, atau pemantauan perangkat tanpa kebutuhan yang sah, persetujuan, transparansi, dan evaluasi privasi.
+
+9. ATURAN PENILAIAN
+
+Penilaian objektif harus dihitung di backend.
+
+Dukung:
+
+Penilaian pilihan ganda.
+Penilaian benar atau salah.
+Penilaian jawaban jamak.
+Penilaian menjodohkan.
+Penilaian pengurutan.
+Penilaian isian dengan aturan normalisasi yang dapat dikonfigurasi.
+Penilaian jawaban singkat sesuai rubrik.
+Penilaian uraian melalui rubrik dan pemeriksaan guru.
+
+Rumus skor harus didefinisikan dengan jelas. Jika seluruh soal memiliki bobot sama dan tidak ada pengurangan nilai, gunakan rumus dasar:
+
+Nilai = (poin yang diperoleh / total poin maksimum) × 100.
+
+Jika bobot soal berbeda, gunakan jumlah poin berbobot yang diperoleh dibagi jumlah poin berbobot maksimum, lalu kalikan 100.
+
+Tentukan perilaku sistem untuk soal kosong, soal tidak berlaku, pembulatan, dan nilai maksimum.
+
+Jangan menggunakan rumus yang sama secara otomatis untuk seluruh tipe soal jika aturan penilaiannya berbeda.
+
+AI tidak boleh menjadi satu-satunya penentu nilai objektif. Untuk jawaban uraian, AI dapat memberikan penilaian sementara berdasarkan rubrik, alasan penilaian, dan tingkat keyakinan, tetapi keputusan final harus mengikuti kebijakan guru.
+
+Simpan skor mentah, skor akhir, rubrik, versi aturan penilaian, status peninjauan, serta jejak perubahan nilai.
+
+Perubahan nilai manual harus memiliki alasan dan audit log.
+
+10. GAMIFIKASI
+
+Bangun sistem gamifikasi yang mendukung motivasi belajar tanpa mengorbankan integritas akademik.
+
+Fitur yang didukung:
+
+XP atau poin pengalaman.
+Level pembelajaran.
+Badge pencapaian.
+Streak belajar.
+Misi harian atau mingguan.
+Target penguasaan materi.
+Rekap pencapaian.
+Tantangan antarsiswa jika diaktifkan.
+Papan peringkat dengan pengaturan privasi.
+Penghargaan atas konsistensi dan kemajuan.
+
+Gamifikasi harus berasal dari peristiwa yang benar-benar terjadi, misalnya kuis yang telah diselesaikan atau tujuan pembelajaran yang telah dikuasai berdasarkan kriteria terdefinisi.
+
+Cegah pemberian XP ganda akibat pengiriman ulang permintaan.
+
+Sediakan pengaturan bagi guru atau administrator untuk menonaktifkan papan peringkat, menggunakan nama samaran, dan menyesuaikan fitur kompetitif dengan kebijakan sekolah.
+
+Jangan memberi penghargaan hanya berdasarkan kecepatan sehingga mendorong siswa menjawab tanpa memahami materi.
+
+11. AI TUTOR DAN INTEGRASI AI BACKEND-ONLY
+11.1 Arsitektur wajib
+
+Seluruh interaksi dengan model AI harus melalui backend.
+
+Frontend tidak boleh menghubungi penyedia model AI secara langsung.
+
+Jangan menempatkan API key, kredensial provider, system prompt rahasia, atau hak akses administratif AI di browser.
+
+Arsitektur yang diharapkan:
+
+Frontend → API backend yang terautentikasi → validasi input dan otorisasi → kebijakan AI dan pembentukan konteks → adapter provider AI → penyedia model AI → validasi keluaran → penyimpanan yang diperlukan → respons backend ke frontend.
+
+Gunakan adapter atau abstraction layer agar provider model dapat diganti tanpa mengubah seluruh aplikasi.
+
+Konfigurasi model, batas token, timeout, retry, dan batas biaya harus berada di lingkungan server.
+
+11.2 Fitur AI tutor
+
+Sediakan kemampuan berikut:
+
+Menjelaskan konsep biologi dengan bahasa yang sesuai untuk siswa kelas X.
+Menyederhanakan penjelasan tanpa mengubah fakta ilmiah.
+Memberikan contoh kontekstual.
+Menjelaskan mengapa suatu jawaban benar.
+Membahas mengapa opsi lain salah.
+Mengidentifikasi miskonsepsi berdasarkan jawaban siswa.
+Menghasilkan pertanyaan latihan tambahan.
+Memberikan petunjuk bertahap sebelum memberikan jawaban lengkap.
+Membuat ringkasan materi.
+Merekomendasikan materi penguatan.
+Membuat rencana belajar berdasarkan tujuan pembelajaran yang belum dikuasai.
+Menjelaskan tabel, grafik, atau stimulus yang telah tersedia dan dapat diakses secara sah.
+Membantu guru membuat draf soal, rubrik, pembahasan, dan variasi latihan.
+
+AI harus mempertimbangkan konteks kurikulum yang telah diverifikasi, tujuan pembelajaran, materi yang relevan, dan tingkat pengetahuan pengguna.
+
+11.3 Grounding dan sumber pengetahuan
+
+Jangan membiarkan model mengarang sumber atau menganggap setiap jawabannya benar.
+
+Jika tersedia kumpulan dokumen yang telah diverifikasi, gunakan retrieval-augmented generation atau mekanisme pengambilan konteks yang setara.
+
+Setiap potongan sumber harus memiliki metadata seperti:
+
+Judul dokumen.
+Penerbit atau lembaga.
+Versi atau tanggal.
+Bagian atau halaman jika tersedia.
+URL jika valid dan tersedia.
+Status verifikasi.
+Hak penggunaan.
+
+Ambil hanya sumber yang relevan dan diizinkan.
+
+Jika jawaban tidak dapat didukung sumber yang memadai, AI harus mengakui keterbatasan, meminta klarifikasi, atau menyarankan pemeriksaan guru.
+
+Jangan mengarang kutipan atau mengklaim telah membuka dokumen yang sebenarnya tidak diakses.
+
+11.4 Pengamanan AI
+
+Implementasikan:
+
+Validasi input.
+Pembatasan panjang permintaan.
+Rate limiting.
+Kuota penggunaan per pengguna.
+Timeout.
+Batas biaya dan token.
+Penanganan kegagalan provider.
+Validasi struktur keluaran.
+Perlindungan terhadap prompt injection.
+Sanitasi keluaran sebelum dirender.
+Pemisahan instruksi sistem dan konten pengguna.
+Pembatasan akses terhadap data pribadi.
+Redaksi informasi sensitif dalam log.
+Pencegahan akses lintas kelas.
+Pemeriksaan izin penggunaan sumber.
+Pemantauan latensi dan tingkat kegagalan.
+Kebijakan retensi riwayat percakapan.
+
+Jangan menganggap keluaran AI aman hanya karena berbentuk JSON. Validasi skema dan maknanya di backend.
+
+Konten dokumen, soal, dan pesan pengguna harus dianggap sebagai data tidak tepercaya, bukan instruksi yang dapat menggantikan kebijakan sistem.
+
+AI tutor tidak boleh memberikan akses ke kunci jawaban yang belum diizinkan, membocorkan prompt internal, menampilkan data siswa lain, atau mengubah nilai tanpa otorisasi.
+
+11.5 AI untuk pembuatan soal
+
+Proses pembuatan soal AI harus melalui tahapan:
+
+Guru memilih topik dan tujuan pembelajaran.
+Guru menentukan tipe soal, tingkat kesulitan, dan tingkat kognitif.
+Backend memvalidasi hak akses dan parameter.
+Backend mengambil konteks sumber yang relevan.
+Model menghasilkan draf terstruktur.
+Backend memvalidasi skema, pilihan jawaban, kunci, pembahasan, dan metadata.
+Sistem memeriksa duplikasi dan inkonsistensi yang dapat dideteksi.
+Draf disimpan dengan status belum disetujui.
+Guru meninjau isi dan sumber.
+Guru menyetujui atau menolak.
+Hanya soal yang memenuhi aturan publikasi yang dapat digunakan pada kuis resmi.
+
+AI tidak boleh otomatis memublikasikan soal yang belum melewati proses persetujuan yang ditetapkan.
+
+11.6 Ketahanan layanan AI
+
+Jika provider AI tidak tersedia:
+
+Aplikasi inti tetap dapat digunakan.
+Kuis dan penilaian objektif tetap berjalan.
+Fitur AI menampilkan status layanan yang jelas.
+Permintaan gagal tidak dianggap berhasil.
+Retry tidak boleh menggandakan transaksi.
+Jangan mengganti jawaban AI yang gagal dengan teks hardcoded yang seolah-olah merupakan respons model.
+Catat kegagalan secara aman tanpa menyimpan data sensitif yang tidak diperlukan.
+
+Jika aplikasi menggunakan streaming, seluruh streaming tetap harus dimediasi backend, dengan otorisasi, batas waktu, pembatalan permintaan, dan penanganan kesalahan yang benar.
+
+12. ARSITEKTUR TEKNOLOGI
+
+Gunakan stack berikut sebagai standar awal. Jika lingkungan pengembangan memiliki batasan nyata, perubahan teknologi harus dijelaskan beserta dampaknya dan dilakukan secara konsisten.
+
+Frontend
+Next.js dengan React dan TypeScript.
+Tailwind CSS.
+Pustaka komponen aksesibel seperti shadcn/ui atau komponen setara.
+React Hook Form untuk pengelolaan formulir.
+Zod untuk validasi data pada batas frontend.
+TanStack Query atau pendekatan sejenis untuk pengambilan dan cache data server.
+Recharts atau pustaka visualisasi yang setara untuk grafik analitik.
+Playwright untuk pengujian end-to-end.
+
+Gunakan versi stabil yang kompatibel dan catat versi aktual di file dependency.
+
+Backend
+
+Gunakan NestJS dengan TypeScript sebagai aplikasi API terpisah.
+
+Gunakan:
+
+REST API berversi.
+Validasi request menggunakan DTO dan skema yang sesuai.
+OpenAPI/Swagger untuk dokumentasi API.
+Lapisan controller, service, repository, dan integrasi provider.
+Guard atau middleware otorisasi.
+Pengelolaan error terpusat.
+Logging terstruktur.
+Health check.
+Job queue jika diperlukan untuk pekerjaan asinkron.
+
+Jangan menaruh seluruh logika bisnis di controller.
+
+Database
+
+Gunakan PostgreSQL dengan Prisma ORM.
+
+Sediakan:
+
+Skema relasional yang konsisten.
+Foreign key.
+Unique constraint.
+Check constraint bila relevan.
+Indeks sesuai pola akses.
+Migrasi database berversi.
+Transaksi untuk operasi kritis.
+Strategi pencadangan.
+Kebijakan retensi.
+Prosedur pemulihan.
+Cache dan antrean
+
+Gunakan Redis hanya untuk kebutuhan yang jelas, misalnya:
+
+Rate limiting terdistribusi.
+Cache data yang aman.
+Antrean pekerjaan.
+Status pekerjaan asinkron.
+Mekanisme koordinasi yang sesuai.
+
+Redis bukan sumber kebenaran untuk nilai akhir atau status transaksi akademik yang membutuhkan persistensi permanen.
+
+Penyimpanan berkas
+
+Gunakan object storage yang kompatibel dengan S3 atau layanan penyimpanan setara untuk gambar, dokumen, dan lampiran.
+
+Terapkan akses privat secara default, URL bertanda tangan dengan masa berlaku terbatas jika diperlukan, validasi tipe dan ukuran berkas, serta pemeriksaan keamanan berkas.
+
+Jangan menyimpan berkas siswa dalam direktori publik tanpa kontrol akses.
+
+Infrastruktur
+Docker untuk lingkungan yang dapat direproduksi.
+CI/CD melalui platform yang tersedia.
+Reverse proxy atau ingress yang sesuai.
+HTTPS.
+Secret management.
+Monitoring dan error tracking.
+Log terstruktur.
+Backup otomatis.
+Lingkungan development, staging, dan production yang terpisah.
+
+Jangan menganggap layanan telah tersedia hanya karena tercantum dalam rancangan. Verifikasi setiap dependensi melalui konfigurasi dan pengujian.
+
+13. DESAIN DATABASE
+
+Rancang skema yang ternormalisasi dan dokumentasikan hubungan antarentitas.
+
+Entitas minimum yang perlu dievaluasi dan diimplementasikan sesuai kebutuhan:
+
+Identitas dan akses
+User.
+UserProfile.
+Role.
+Permission.
+UserRole.
+Session atau RefreshToken.
+PasswordResetToken.
+AuditLog.
+Organisasi pembelajaran
+School atau Organization.
+AcademicYear.
+Classroom.
+ClassroomMembership.
+ClassroomInvitation.
+TeacherAssignment.
+Kurikulum dan materi
+Curriculum.
+CurriculumVersion.
+LearningObjective.
+BiologyTopic.
+TopicPrerequisite.
+LearningMaterial.
+MaterialVersion.
+MaterialSource.
+ContentReview.
+Bank soal
+Question.
+QuestionVersion.
+QuestionOption.
+QuestionTag.
+QuestionObjectiveMapping.
+AnswerKey.
+GradingRubric.
+QuestionReview.
+QuestionSource.
+Kuis
+Quiz.
+QuizVersion.
+QuizQuestion.
+QuizAssignment.
+QuizAvailability.
+QuizAttempt.
+AttemptQuestion.
+StudentAnswer.
+AnswerRevision jika diperlukan.
+QuizResult.
+ManualGradeReview.
+Pembelajaran dan gamifikasi
+LearningProgress.
+MasteryRecord.
+AchievementDefinition.
+UserAchievement.
+XPEvent.
+StudyGoal.
+RecommendationRecord.
+AI
+AIConversation.
+AIMessage jika riwayat disimpan.
+AIRequestLog dengan minimisasi data.
+AIUsageQuota.
+AIGeneratedDraft.
+AIEvaluation jika diperlukan.
+Operasional
+Notification.
+FileAsset.
+BackgroundJob jika dibutuhkan.
+SystemSetting.
+DataExportJob.
+
+Jangan memaksakan semua entitas menjadi tabel terpisah apabila tidak ada kebutuhan domain yang jelas. Dokumentasikan keputusan desain.
+
+Persyaratan data:
+
+Gunakan UUID atau identifier yang sesuai.
+Tambahkan createdAt dan updatedAt pada entitas yang relevan.
+Terapkan soft delete hanya jika dibutuhkan dan memiliki kebijakan retensi yang jelas.
+Gunakan foreign key.
+Gunakan unique constraint untuk mencegah duplikasi yang tidak diinginkan.
+Tentukan perilaku penghapusan relasi secara eksplisit.
+Hindari menyimpan data yang sama di banyak tabel tanpa alasan.
+Pisahkan jawaban benar dari respons API siswa.
+Simpan snapshot versi soal yang digunakan dalam attempt.
+Gunakan transaksi untuk finalisasi kuis, penilaian, dan pemberian XP.
+Pastikan query selalu memeriksa kewenangan dan ruang lingkup data.
+
+Dokumentasikan ERD, relasi, indeks, dan alasan keputusan skema.
+
+14. DESAIN API
+
+Gunakan prefix API berversi, misalnya /api/v1.
+
+Kelompokkan endpoint berdasarkan domain.
+
+Autentikasi
+POST /auth/register, jika pendaftaran mandiri diizinkan.
+POST /auth/login.
+POST /auth/logout.
+POST /auth/refresh.
+POST /auth/forgot-password.
+POST /auth/reset-password.
+GET /auth/me.
+Pengguna dan kelas
+GET /users/me.
+PATCH /users/me.
+GET /classrooms.
+POST /classrooms.
+GET /classrooms/:id.
+POST /classrooms/:id/invitations.
+POST /classrooms/join.
+GET /classrooms/:id/members.
+Materi dan kurikulum
+GET /curricula.
+GET /learning-objectives.
+GET /biology/topics.
+GET /materials.
+GET /materials/:id.
+Bank soal dan kuis
+GET /questions.
+POST /questions.
+PATCH /questions/:id.
+POST /questions/:id/submit-for-review.
+POST /questions/:id/approve.
+GET /quizzes.
+POST /quizzes.
+PATCH /quizzes/:id.
+POST /quizzes/:id/publish.
+POST /quizzes/:id/assign.
+GET /quizzes/:id/attempts.
+Pengerjaan
+POST /quizzes/:id/attempts.
+GET /attempts/:id.
+PUT /attempts/:id/answers/:questionId.
+POST /attempts/:id/submit.
+GET /attempts/:id/result.
+POST /attempts/:id/review-request jika alur peninjauan tersedia.
+AI
+POST /ai/tutor/messages.
+POST /ai/questions/generate.
+POST /ai/explanations/generate.
+GET /ai/usage.
+GET /ai/jobs/:id jika pekerjaan berlangsung secara asinkron.
+Analitik
+GET /analytics/student.
+GET /analytics/classrooms/:id.
+GET /analytics/quizzes/:id.
+GET /reports/export.
+
+Endpoint di atas merupakan kontrak awal yang harus disesuaikan dengan model domain final.
+
+Jangan membuat endpoint yang belum memiliki implementasi atau mengembalikan data fiktif.
+
+Untuk setiap endpoint, dokumentasikan:
+
+Metode HTTP.
+Request schema.
+Response schema.
+Status code.
+Authentication requirement.
+Permission requirement.
+Validasi input.
+Kebijakan pagination.
+Rate limit.
+Error code.
+Dampak terhadap data.
+Idempotency untuk operasi kritis.
+
+Gunakan format error yang konsisten dan tidak membocorkan stack trace atau informasi internal.
+
+15. AUTENTIKASI DAN KEAMANAN APLIKASI
+
+Implementasikan:
+
+Password hashing menggunakan algoritma yang sesuai seperti Argon2id.
+Verifikasi identitas dan kontrol sesi.
+Rotasi refresh token bila mekanisme token digunakan.
+Cookie HttpOnly, Secure, dan SameSite yang sesuai jika menggunakan autentikasi berbasis cookie.
+Proteksi CSRF jika relevan.
+Pembatasan percobaan login.
+Rate limiting.
+Kebijakan password yang proporsional.
+Pemulihan akun yang aman.
+Validasi input server.
+Output encoding.
+Proteksi XSS.
+Proteksi SQL injection melalui query terparameterisasi dan ORM.
+CORS berdasarkan daftar origin yang diizinkan.
+Security headers.
+Pembatasan ukuran request dan upload.
+Pemeriksaan otorisasi pada setiap objek yang diminta.
+Pengelolaan secret melalui environment atau secret manager.
+Audit log untuk aktivitas sensitif.
+Prosedur penonaktifan akun dan pencabutan sesi.
+
+Jangan hanya mengandalkan penyembunyian tombol di frontend untuk membatasi akses.
+
+Cegah IDOR/BOLA dengan memastikan pengguna hanya dapat mengakses objek yang benar-benar berada dalam ruang lingkup izinnya.
+
+Periksa seluruh endpoint yang menggunakan identifier kelas, kuis, attempt, hasil, materi, dan file.
+
+Jangan mengembalikan field sensitif yang sebenarnya tidak dibutuhkan frontend.
+
+16. PRIVASI DAN PERLINDUNGAN DATA SISWA
+
+Karena aplikasi ditujukan untuk siswa, minimalkan pengumpulan data pribadi.
+
+Kumpulkan data yang benar-benar diperlukan.
+Jelaskan tujuan pengumpulan dan penggunaan data.
+Terapkan kontrol akses berbasis peran.
+Tentukan retensi data.
+Sediakan prosedur koreksi dan penghapusan sesuai kewajiban yang berlaku.
+Batasi akses terhadap percakapan AI.
+Hindari memasukkan data identitas siswa ke prompt AI apabila tidak diperlukan.
+Jangan menggunakan data siswa untuk pelatihan model pihak ketiga tanpa dasar, izin, dan transparansi yang sesuai.
+Evaluasi lokasi penyimpanan dan pemrosesan data.
+Sediakan kebijakan privasi yang jelas.
+Tentukan mekanisme persetujuan wali atau sekolah jika diwajibkan.
+Ikuti ketentuan perlindungan data pribadi dan peraturan pendidikan yang berlaku di Indonesia.
+
+Jangan mengklaim kepatuhan hukum hanya berdasarkan keberadaan halaman kebijakan privasi. Lakukan pemeriksaan substantif terhadap alur data dan kewajiban hukum yang relevan.
+
+17. UI/UX DAN DESIGN SYSTEM
+
+Gunakan pendekatan visual modern, bersih, edukatif, ramah siswa, dan profesional.
+
+17.1 Identitas visual
+
+Gunakan warna dasar yang konsisten:
+
+Hijau sebagai warna utama yang diasosiasikan dengan biologi dan kehidupan.
+Putih atau warna netral untuk area konten.
+Biru sebagai warna pendukung informasi.
+Kuning atau amber untuk perhatian.
+Merah hanya untuk kesalahan atau peringatan penting.
+Warna teks yang memenuhi kontras aksesibilitas.
+
+Tentukan palet final melalui design tokens, bukan penggunaan warna acak pada setiap komponen.
+
+Hindari penggunaan gradient, animasi, bayangan, dan efek dekoratif secara berlebihan.
+
+Gunakan ilustrasi biologi yang relevan dan berhak digunakan. Jangan memakai gambar yang diambil sembarangan dari internet.
+
+17.2 Tipografi dan layout
+Gunakan tipografi sans-serif yang mudah dibaca.
+Tentukan skala tipografi untuk judul, isi, label, dan keterangan.
+Terapkan sistem spacing yang konsisten.
+Gunakan radius dan shadow secara konsisten.
+Utamakan keterbacaan soal dan opsi jawaban.
+Hindari paragraf yang terlalu lebar.
+Pastikan layout nyaman untuk layar kecil.
+Gunakan ikon yang konsisten dan memiliki makna jelas.
+17.3 Navigasi siswa
+
+Sediakan navigasi menuju:
+
+Beranda.
+Materi belajar.
+Kuis.
+Hasil dan progres.
+Tutor AI.
+Pencapaian.
+Profil dan pengaturan.
+
+Pada desktop, gunakan sidebar atau navigasi yang sesuai. Pada mobile, gunakan navigasi yang mudah dijangkau dan tidak menutupi konten utama.
+
+17.4 Navigasi guru
+
+Sediakan:
+
+Dashboard guru.
+Kelas.
+Siswa.
+Bank soal.
+Kuis.
+Penugasan.
+Materi.
+Analitik.
+Laporan.
+Pengaturan akun.
+17.5 Navigasi administrator
+
+Sediakan:
+
+Dashboard sistem.
+Pengguna dan peran.
+Kurikulum dan materi.
+Bank soal global.
+Moderasi konten.
+Konfigurasi AI.
+Penggunaan dan biaya AI.
+Audit log.
+Pengaturan operasional.
+
+Semua menu harus mengikuti izin pengguna yang sedang login.
+
+18. DAFTAR HALAMAN WAJIB
+Halaman umum
+Landing page.
+Login.
+Registrasi jika diaktifkan.
+Lupa password.
+Reset password.
+Ketentuan penggunaan.
+Kebijakan privasi.
+Halaman bantuan.
+Halaman 403.
+Halaman 404.
+Halaman error umum.
+Halaman siswa
+Dashboard siswa.
+Daftar materi.
+Detail materi.
+Daftar kuis.
+Detail kuis.
+Konfirmasi memulai kuis.
+Antarmuka pengerjaan kuis.
+Ringkasan pengiriman.
+Hasil kuis.
+Pembahasan.
+Riwayat kuis.
+Progres belajar.
+Analitik penguasaan materi.
+Tutor AI.
+Pencapaian.
+Profil dan pengaturan.
+Halaman guru
+Dashboard guru.
+Daftar kelas.
+Detail kelas.
+Manajemen anggota.
+Bank soal.
+Editor soal.
+Pratinjau soal.
+Review soal.
+Editor kuis.
+Pratinjau kuis.
+Pengaturan jadwal dan penugasan.
+Pemantauan pengerjaan.
+Detail hasil siswa.
+Koreksi jawaban uraian.
+Analitik kelas.
+Laporan dan ekspor.
+Manajemen materi.
+Riwayat perubahan.
+Halaman administrator
+Dashboard administrator.
+Pengguna.
+Detail pengguna.
+Peran dan izin.
+Organisasi dan kelas.
+Kurikulum.
+Topik dan tujuan pembelajaran.
+Materi.
+Bank soal.
+Moderasi dan persetujuan konten.
+Konfigurasi integrasi AI.
+Penggunaan AI dan biaya.
+Audit log.
+Status layanan.
+Kebijakan retensi dan pengaturan sistem.
+
+Setiap halaman harus memiliki fungsi, state, validasi, dan perilaku yang nyata.
+
+19. SPESIFIKASI DASHBOARD
+19.1 Dashboard siswa
+
+Tampilkan data nyata yang relevan:
+
+Sapaan dan profil.
+Kuis yang akan datang.
+Kuis aktif.
+Kuis yang belum selesai.
+Kuis yang sudah diselesaikan.
+Rata-rata nilai dengan definisi perhitungan yang jelas.
+Progres penguasaan topik.
+Tujuan pembelajaran yang perlu diperkuat.
+Aktivitas belajar terbaru.
+Rekomendasi belajar.
+Pencapaian yang telah diperoleh.
+
+Jangan menampilkan angka statistik buatan.
+
+Jika belum ada riwayat, tampilkan empty state yang mendorong siswa memulai aktivitas pertama.
+
+19.2 Dashboard guru
+
+Tampilkan:
+
+Jumlah kelas yang dikelola.
+Jumlah anggota aktif dalam ruang lingkup akses.
+Kuis yang sedang aktif.
+Kuis yang perlu diperiksa.
+Tingkat penyelesaian penugasan.
+Distribusi nilai.
+Tujuan pembelajaran dengan banyak kesalahan.
+Soal yang menunggu review.
+Aktivitas kelas terbaru.
+
+Setiap metrik harus memiliki definisi, filter waktu, dan sumber query yang terdokumentasi.
+
+19.3 Dashboard administrator
+
+Tampilkan:
+
+Jumlah akun aktif.
+Status layanan.
+Statistik penggunaan yang sah.
+Kesehatan API.
+Kegagalan pekerjaan asinkron.
+Status integrasi AI.
+Penggunaan dan estimasi biaya AI.
+Aktivitas keamanan yang relevan.
+Status backup berdasarkan bukti dari sistem backup.
+
+Jangan menampilkan status backup sukses hanya karena konfigurasi backup telah dibuat.
+
+20. INTERAKSI DAN STATE UI
+
+Implementasikan state untuk:
+
+Loading.
+Success.
+Error.
+Empty.
+Disabled.
+Submitting.
+Saving.
+Saved.
+Unsaved changes.
+Permission denied.
+Session expired.
+Network disconnected.
+Retry available.
+AI processing.
+AI unavailable.
+Attempt expired.
+Quiz submitted.
+Results pending review.
+
+Gunakan notifikasi yang jelas dan tidak berlebihan.
+
+Untuk tindakan penting, sediakan konfirmasi yang sesuai, terutama untuk:
+
+Menghapus atau mengarsipkan konten.
+Menutup kuis.
+Mengubah jadwal.
+Mengirimkan kuis.
+Mengubah nilai.
+Mengubah peran.
+Menghapus anggota kelas.
+
+Jangan menggunakan dialog konfirmasi untuk setiap tindakan sederhana.
+
+Cegah pengiriman ganda dengan status loading dan perlindungan backend.
+
+21. AKSESIBILITAS
+
+Targetkan WCAG 2.2 Level AA sejauh relevan untuk aplikasi.
+
+Implementasikan:
+
+Navigasi keyboard.
+Focus indicator yang jelas.
+Label formulir yang benar.
+Struktur heading yang logis.
+Kontras warna memadai.
+Dukungan screen reader.
+Pesan error yang dapat dipahami.
+Informasi status yang tidak bergantung pada warna saja.
+Alternatif teks untuk gambar informatif.
+Kontrol yang dapat digunakan pada layar sentuh.
+Penghormatan terhadap prefers-reduced-motion.
+Target sentuh yang memadai.
+Pengelolaan fokus pada modal.
+Aksesibilitas diagram dan grafik.
+
+Jangan mengandalkan ikon tanpa label untuk tindakan penting.
+
+Sediakan tampilan yang tetap dapat digunakan pada layar kecil tanpa scrolling horizontal yang tidak diperlukan.
+
+22. RESPONSIVE DESIGN
+
+Uji layout setidaknya pada kategori:
+
+Mobile kecil.
+Mobile umum.
+Tablet.
+Laptop.
+Desktop lebar.
+
+Gunakan breakpoint berdasarkan kebutuhan konten, bukan sekadar menyalin nilai breakpoint tanpa pertimbangan.
+
+Pastikan:
+
+Teks soal tidak terpotong.
+Pilihan jawaban mudah dipilih.
+Timer tidak menutupi soal.
+Dialog tetap dapat digunakan.
+Tabel analitik memiliki strategi tampilan mobile.
+Sidebar berubah menjadi navigasi mobile bila diperlukan.
+Formulir tidak melampaui viewport.
+Grafik tetap dapat dibaca.
+Pengerjaan kuis nyaman menggunakan sentuhan.
+23. ANALITIK PEMBELAJARAN
+
+Gunakan data pengerjaan yang nyata untuk menghasilkan analitik.
+
+Sediakan:
+
+Perkembangan nilai dari waktu ke waktu.
+Penguasaan berdasarkan topik.
+Penguasaan berdasarkan tujuan pembelajaran.
+Jumlah percobaan.
+Persentase penyelesaian.
+Jenis soal yang sering salah.
+Waktu pengerjaan jika pengukuran tersedia dan dapat diinterpretasikan secara tepat.
+Perbandingan hasil antarkuis yang sebanding.
+Rekomendasi materi penguatan.
+Analitik kelas untuk guru.
+Laporan hasil belajar.
+
+Jangan menyimpulkan kemampuan siswa hanya dari satu soal atau satu percobaan.
+
+Bedakan antara:
+
+Nilai asesmen.
+Estimasi penguasaan materi.
+Tingkat penyelesaian.
+Aktivitas belajar.
+Rekomendasi AI.
+
+Definisikan algoritma penguasaan materi secara eksplisit, termasuk jumlah data minimum, bobot, penanganan percobaan ulang, dan batas interpretasi.
+
+Jika data belum mencukupi, tampilkan status belum cukup data alih-alih menghasilkan persentase yang menyesatkan.
+
+AI boleh membantu menafsirkan pola, tetapi metrik dasar harus dapat dihitung ulang dan diverifikasi.
+
+24. NOTIFIKASI
+
+Sediakan sistem notifikasi in-app untuk:
+
+Kuis baru.
+Pengingat tenggat.
+Perubahan jadwal.
+Hasil kuis tersedia.
+Umpan balik guru.
+Pengumuman kelas.
+Aktivitas pembelajaran penting.
+
+Email dapat diaktifkan jika provider dan konfigurasi telah tersedia.
+
+Persyaratan:
+
+Notifikasi berasal dari peristiwa nyata.
+Tidak ada notifikasi duplikat akibat retry.
+Pengguna dapat menandai notifikasi telah dibaca.
+Preferensi notifikasi dihormati.
+Notifikasi tidak membocorkan informasi sensitif.
+Jadwal dan zona waktu ditangani dengan konsisten.
+25. PENCARIAN, FILTER, DAN PAGINATION
+
+Sediakan pencarian dan filter sesuai kebutuhan pada:
+
+Materi.
+Soal.
+Kuis.
+Kelas.
+Anggota.
+Riwayat pengerjaan.
+Laporan.
+Audit log.
+
+Gunakan pagination server-side untuk dataset yang dapat berkembang.
+
+Validasi parameter sorting dan filtering menggunakan daftar yang diizinkan.
+
+Cegah query yang mahal atau tidak terbatas.
+
+Pertahankan filter yang relevan ketika pengguna membuka detail lalu kembali ke daftar, sejauh sesuai dengan pengalaman pengguna.
+
+26. IMPOR DAN EKSPOR DATA
+
+Jika implementasi ekspor diaktifkan, dukung CSV atau format lain yang sesuai untuk:
+
+Daftar siswa yang berhak diakses.
+Bank soal.
+Hasil kuis.
+Rekap kelas.
+Laporan penguasaan materi.
+
+Impor harus menyediakan:
+
+Validasi format.
+Validasi setiap baris.
+Ringkasan kesalahan.
+Pratinjau sebelum commit.
+Deteksi duplikasi.
+Transaksi atau strategi pemrosesan yang aman.
+Audit log.
+
+Ekspor harus memeriksa izin dan membatasi kolom yang dapat diunduh.
+
+Lindungi dari CSV formula injection dengan melakukan sanitasi pada nilai yang diekspor.
+
+Jangan mengizinkan ekspor massal data pribadi kepada pengguna yang tidak memiliki hak akses.
+
+27. ARSITEKTUR FRONTEND
+
+Gunakan struktur modular yang mencerminkan domain aplikasi.
+
+Pisahkan:
+
+App routes.
+Layout.
+UI primitives.
+Design tokens.
+Feature modules.
+API client.
+Authentication.
+Authorization-aware navigation.
+Forms.
+Query hooks.
+Domain types.
+Error handling.
+Utilities.
+Tests.
+
+Gunakan TypeScript strict mode.
+
+Hindari penggunaan any tanpa alasan dan dokumentasi.
+
+Jangan menduplikasi definisi tipe API yang dapat dibuat konsisten melalui kontrak yang tervalidasi.
+
+Frontend tidak boleh menentukan sendiri izin pengguna, skor final, batas waktu resmi, atau status publikasi.
+
+Semua keputusan tersebut harus dikonfirmasi oleh backend.
+
+Jangan menyimpan data rahasia di bundle frontend atau variabel environment publik.
+
+28. ARSITEKTUR BACKEND
+
+Pisahkan modul sesuai domain, misalnya:
+
+AuthModule.
+UsersModule.
+RolesModule.
+ClassroomsModule.
+CurriculumModule.
+MaterialsModule.
+QuestionsModule.
+QuizzesModule.
+AttemptsModule.
+GradingModule.
+AnalyticsModule.
+GamificationModule.
+AITutorModule.
+AIQuestionGenerationModule.
+NotificationsModule.
+FilesModule.
+ReportsModule.
+AuditModule.
+HealthModule.
+
+Setiap modul harus memiliki tanggung jawab yang jelas.
+
+Gunakan dependency injection dan abstraksi untuk integrasi eksternal.
+
+Terapkan:
+
+Input validation.
+Domain validation.
+Authorization checks.
+Centralized exception handling.
+Structured logging.
+Transaction boundaries.
+Pagination.
+API versioning.
+Request correlation ID.
+Timeout untuk dependency eksternal.
+Circuit breaker bila sesuai.
+Health dan readiness checks.
+
+Jangan membuat layanan abstrak yang tidak diperlukan, tetapi hindari ketergantungan erat yang menghambat pengujian dan perubahan provider.
+
+29. TRANSAKSI DAN KONSISTENSI DATA
+
+Identifikasi operasi yang memerlukan konsistensi kuat:
+
+Memulai attempt.
+Menyimpan jawaban.
+Mengirim kuis.
+Menghitung nilai.
+Memfinalisasi hasil.
+Memberikan XP.
+Mengubah nilai secara manual.
+Mempublikasikan kuis.
+Menyetujui soal.
+Mengubah keanggotaan kelas.
+
+Gunakan transaksi database, unique constraint, optimistic concurrency, idempotency key, atau mekanisme lain yang sesuai.
+
+Rancang perlindungan terhadap:
+
+Dua permintaan submit bersamaan.
+Pengiriman jawaban yang terlambat.
+Retry jaringan.
+Duplikasi XP.
+Penghapusan soal yang sedang digunakan.
+Perubahan konfigurasi ketika kuis sedang berjalan.
+Perubahan hak akses selama pengerjaan.
+
+Dokumentasikan perilaku yang diharapkan dalam kondisi race condition.
+
+30. OBSERVABILITY DAN OPERASIONAL
+
+Implementasikan:
+
+Structured application logs.
+Request ID.
+Error tracking.
+API latency metrics.
+Error rate.
+Database health.
+Queue health jika digunakan.
+AI provider latency.
+AI provider error rate.
+Penggunaan token dan biaya jika provider mendukungnya.
+Rate-limit metrics.
+Peringatan untuk kegagalan kritis.
+
+Jangan memasukkan password, token, API key, isi sensitif, atau data pribadi yang tidak diperlukan ke log.
+
+Sediakan health endpoint dan readiness endpoint yang tidak mengungkap detail internal.
+
+Sediakan prosedur penanganan insiden, rotasi secret, migrasi, pemulihan backup, dan pembaruan dependency.
+
+31. TESTING WAJIB
+
+Jangan menyatakan aplikasi selesai hanya karena halaman dapat dibuka.
+
+31.1 Unit testing
+
+Uji:
+
+Validasi soal.
+Algoritma penilaian.
+Pengacakan.
+Perhitungan nilai.
+Penentuan status attempt.
+Batas waktu.
+Idempotency.
+Perhitungan XP.
+Perhitungan analitik.
+Permission rules.
+Validasi skema AI.
+Penanganan error.
+31.2 Integration testing
+
+Uji interaksi dengan:
+
+Database.
+Autentikasi.
+Otorisasi.
+Pembuatan kuis.
+Pengerjaan kuis.
+Penyimpanan jawaban.
+Finalisasi attempt.
+Penilaian.
+Penyimpanan AI draft.
+Pencatatan audit log.
+Pengiriman notifikasi.
+Penyimpanan file.
+
+Gunakan layanan pengujian terisolasi atau container sesuai kebutuhan. Jangan menggunakan data produksi untuk pengujian.
+
+Data pengujian sintetis boleh digunakan secara eksplisit di lingkungan test yang terpisah, tetapi tidak boleh disajikan sebagai data nyata dalam aplikasi produksi.
+
+31.3 End-to-end testing
+
+Uji alur lengkap:
+
+Guru masuk.
+Guru membuat kelas.
+Guru menambahkan soal.
+Guru membuat kuis.
+Guru memublikasikan dan menugaskan kuis.
+Siswa masuk.
+Siswa mengerjakan kuis.
+Jawaban tersimpan di server.
+Siswa mengirimkan kuis.
+Server menghitung nilai.
+Hasil tersimpan.
+Siswa melihat hasil sesuai kebijakan.
+Guru melihat hasil siswa.
+Guru meninjau jawaban uraian.
+Analitik diperbarui secara konsisten.
+
+Uji juga kasus batas waktu, refresh, koneksi terputus, pengiriman ganda, dan percobaan ulang.
+
+31.4 Security testing
+
+Uji:
+
+Akses tanpa autentikasi.
+Eskalasi hak akses.
+IDOR/BOLA.
+CSRF jika relevan.
+XSS.
+SQL injection.
+Brute force.
+Rate limiting.
+Kebocoran kunci jawaban.
+Kebocoran secret.
+Akses file tanpa izin.
+Penyalahgunaan endpoint AI.
+Prompt injection.
+Akses lintas kelas.
+Manipulasi nilai dari frontend.
+Duplikasi transaksi.
+Penyalahgunaan endpoint ekspor.
+31.5 Accessibility dan performa
+
+Uji:
+
+Keyboard navigation.
+Screen reader labels.
+Kontras.
+Responsive layout.
+Ukuran halaman.
+Waktu respons API.
+Query lambat.
+Beban pengguna bersamaan.
+Waktu muat halaman.
+Perilaku saat dependency lambat atau tidak tersedia.
+
+Gunakan target performa yang terukur, disesuaikan dengan infrastruktur, profil beban, dan karakteristik aplikasi.
+
+Jangan mengklaim lulus pengujian jika pengujian belum dijalankan.
+
+32. KRITERIA PENERIMAAN
+
+Aplikasi dapat dinyatakan memenuhi tahap penerimaan apabila seluruh kriteria berikut telah dibuktikan.
+
+Fungsional
+Autentikasi dan manajemen sesi berfungsi.
+Role dan izin ditegakkan backend.
+Data pengguna berasal dari database.
+Materi dapat dikelola sesuai izin.
+Bank soal mendukung alur pembuatan dan peninjauan.
+Kuis dapat dibuat, dipublikasikan, dan ditugaskan.
+Siswa dapat memulai dan menyelesaikan kuis.
+Autosave benar-benar menyimpan jawaban ke server.
+Skor objektif dihitung backend.
+Hasil persisten dan dapat diambil kembali.
+Dashboard mengambil data nyata.
+Analitik dapat diverifikasi dari data sumber.
+AI tutor berkomunikasi melalui backend.
+Draf soal AI melewati validasi dan persetujuan.
+Kegagalan AI tidak merusak fungsi kuis.
+Notifikasi dan ekspor, jika diaktifkan, berfungsi sesuai kontrak.
+Tidak ada tombol utama yang sekadar dekoratif.
+Keamanan
+Tidak ada secret provider AI dalam bundle frontend.
+Tidak ada akses lintas pengguna atau kelas yang tidak sah.
+Kunci jawaban dilindungi.
+Nilai tidak dapat dimanipulasi melalui payload frontend.
+Endpoint sensitif menerapkan otorisasi.
+Log tidak membocorkan informasi sensitif.
+Konfigurasi produksi tidak menggunakan secret contoh.
+Dependensi dan migrasi terdokumentasi.
+Akademik
+Materi dan soal memiliki metadata yang relevan.
+Sumber yang diklaim telah diverifikasi.
+Soal yang belum disetujui tidak dapat digunakan dalam kuis resmi jika kebijakan mengharuskan persetujuan.
+Penilaian memiliki aturan yang jelas.
+Pembahasan sesuai dengan konsep biologi yang benar.
+Miskonsepsi ditangani melalui penjelasan yang tepat.
+Konten AI tidak otomatis dianggap benar.
+Operasional
+Aplikasi dapat dijalankan mengikuti dokumentasi.
+Migrasi database dapat diterapkan.
+Health checks berfungsi.
+Pengujian otomatis dapat dijalankan.
+Backup dan restore memiliki prosedur yang dapat diuji.
+Konfigurasi lingkungan didokumentasikan.
+Error dan kegagalan dependency dapat diamati.
+Tidak ada klaim deployment produksi tanpa bukti.
+UI/UX
+Halaman utama responsif.
+Semua state penting ditangani.
+Formulir memiliki validasi yang jelas.
+Navigasi dapat digunakan dengan keyboard.
+Tidak ada elemen penting yang terpotong.
+Tidak ada data statistik palsu.
+Tidak ada tautan atau tombol yang tidak memiliki fungsi.
+33. STRUKTUR REPOSITORI
+
+Gunakan monorepo atau struktur proyek yang konsisten dan terdokumentasi.
+
+Contoh struktur yang disarankan:
+
+apps/web — aplikasi frontend.
+apps/api — backend API.
+packages/contracts — kontrak dan skema bersama bila sesuai.
+packages/config — konfigurasi bersama bila diperlukan.
+prisma — schema dan migrations.
+docs — dokumentasi.
+tests — pengujian lintas modul bila diperlukan.
+infra — konfigurasi infrastruktur.
+scripts — skrip operasional yang aman.
+
+Struktur akhir boleh disesuaikan dengan kebutuhan nyata, tetapi jangan membuat folder atau abstraksi tanpa kegunaan.
+
+Sertakan:
+
+README.md.
+.env.example tanpa secret asli.
+Dokumentasi instalasi.
+Dokumentasi arsitektur.
+ERD.
+API documentation.
+Panduan pengujian.
+Panduan deployment.
+Panduan backup dan restore.
+Panduan konfigurasi AI.
+Panduan operasional.
+Dokumentasi kebijakan keamanan dan privasi.
+34. KONFIGURASI LINGKUNGAN
+
+Gunakan environment variable untuk konfigurasi, termasuk bila diperlukan:
+
+DATABASE_URL.
+REDIS_URL.
+AI_PROVIDER.
+AI_API_KEY.
+AI_MODEL.
+AI_TIMEOUT_MS.
+AI_MAX_OUTPUT_TOKENS.
+AI_REQUEST_RATE_LIMIT.
+AI_DAILY_BUDGET.
+OBJECT_STORAGE_ENDPOINT.
+OBJECT_STORAGE_BUCKET.
+OBJECT_STORAGE_ACCESS_KEY.
+OBJECT_STORAGE_SECRET_KEY.
+EMAIL_PROVIDER.
+EMAIL_API_KEY.
+APP_BASE_URL.
+API_BASE_URL.
+SESSION_SECRET atau konfigurasi autentikasi yang relevan.
+LOG_LEVEL.
+SENTRY_DSN atau konfigurasi error tracking yang relevan.
+
+Daftar final harus mengikuti implementasi aktual. Jangan menambahkan variabel yang tidak digunakan.
+
+Bedakan variabel server-only dari variabel yang sengaja diekspos ke browser.
+
+Validasi konfigurasi wajib saat startup. Jika konfigurasi kritis tidak tersedia, hentikan startup atau nonaktifkan integrasi secara eksplisit sesuai kebijakan, bukan berpura-pura berhasil.
+
+Jangan memasukkan nilai secret nyata ke dokumentasi, commit, screenshot, atau log.
+
+35. DEPLOYMENT DAN CI/CD
+
+Siapkan pipeline yang dapat menjalankan:
+
+Dependency installation.
+Formatting check.
+Linting.
+Type checking.
+Unit tests.
+Integration tests.
+Build.
+Security dan dependency checks.
+Migrasi terkontrol.
+Deployment ke staging.
+Smoke tests.
+Persetujuan deployment produksi sesuai kebijakan.
+
+Jangan menjalankan migrasi destruktif tanpa evaluasi dan mekanisme pemulihan.
+
+Gunakan strategi migrasi yang kompatibel dengan versi aplikasi yang sedang berjalan.
+
+Sediakan rollback aplikasi dan prosedur pemulihan database yang realistis.
+
+Pisahkan konfigurasi development, staging, dan production.
+
+Jangan menanamkan kredensial produksi dalam file Docker atau konfigurasi CI/CD yang dapat dibaca publik.
+
+36. STRATEGI PENCADANGAN DAN PEMULIHAN
+
+Tentukan:
+
+Data yang dicadangkan.
+Frekuensi backup.
+Retensi backup.
+Enkripsi.
+Pembatasan akses.
+Lokasi penyimpanan.
+Prosedur restore.
+Penanggung jawab.
+Target RPO dan RTO berdasarkan kebutuhan sekolah.
+Pengujian pemulihan berkala.
+
+Jangan menganggap backup valid sebelum pemulihan uji berhasil.
+
+Lindungi backup yang memuat data pribadi dari akses yang tidak sah.
+
+37. TAHAPAN IMPLEMENTASI
+
+Laksanakan pengembangan secara bertahap. Setiap tahap harus menghasilkan implementasi nyata, dokumentasi, dan pengujian.
+
+Tahap 0 — Audit dan penemuan kebutuhan
+Periksa repositori yang tersedia.
+Identifikasi framework dan konfigurasi yang sudah ada.
+Periksa dokumentasi pengguna dan kebutuhan deployment.
+Identifikasi batasan lingkungan.
+Susun daftar asumsi dan keputusan teknis.
+Identifikasi dependensi eksternal.
+Jangan menimpa proyek yang sudah ada tanpa audit.
+
+Hasil: laporan kondisi awal, arsitektur target, risiko, dan backlog implementasi.
+
+Tahap 1 — Fondasi proyek
+Buat atau rapikan struktur repositori.
+Konfigurasikan frontend dan backend.
+Siapkan database.
+Terapkan migrasi.
+Siapkan environment validation.
+Siapkan linting, formatting, dan testing.
+Siapkan logging dan health checks.
+
+Hasil: aplikasi dasar dapat dijalankan dan diuji.
+
+Tahap 2 — Autentikasi dan otorisasi
+Implementasikan autentikasi.
+Implementasikan sesi.
+Implementasikan role dan permission.
+Implementasikan profil.
+Uji pembatasan akses.
+
+Hasil: sistem identitas yang benar-benar berfungsi.
+
+Tahap 3 — Kurikulum dan konten
+Implementasikan struktur kurikulum.
+Implementasikan tujuan pembelajaran.
+Implementasikan materi.
+Implementasikan sumber.
+Implementasikan bank soal.
+Implementasikan review dan versioning.
+
+Hasil: konten dapat dikelola tanpa data palsu.
+
+Tahap 4 — Kuis dan penilaian
+Implementasikan konfigurasi kuis.
+Implementasikan assignment.
+Implementasikan attempt.
+Implementasikan autosave.
+Implementasikan penilaian.
+Implementasikan hasil.
+Implementasikan peninjauan uraian.
+
+Hasil: alur kuis lengkap dapat diuji end-to-end.
+
+Tahap 5 — Dashboard dan analitik
+Implementasikan dashboard siswa.
+Implementasikan dashboard guru.
+Implementasikan dashboard administrator.
+Implementasikan metrik dan query.
+Validasi konsistensi angka.
+
+Hasil: seluruh statistik berasal dari data aktual.
+
+Tahap 6 — Integrasi AI backend
+Implementasikan provider adapter.
+Implementasikan tutor AI.
+Implementasikan pengelolaan konteks.
+Implementasikan validasi output.
+Implementasikan generasi draf soal.
+Implementasikan review guru.
+Implementasikan quota dan cost control.
+Uji kegagalan provider dan prompt injection.
+
+Hasil: AI terintegrasi tanpa secret di frontend dan tanpa menggantikan otoritas penilaian.
+
+Tahap 7 — Gamifikasi dan notifikasi
+Implementasikan XP.
+Implementasikan pencapaian.
+Implementasikan notifikasi.
+Implementasikan analitik penguasaan.
+Uji idempotency dan konsistensi.
+Tahap 8 — Penyempurnaan UI/UX
+Lengkapi seluruh halaman.
+Lengkapi loading dan error states.
+Perbaiki navigasi.
+Uji responsivitas.
+Uji aksesibilitas.
+Hilangkan placeholder dan interaksi palsu.
+Tahap 9 — Quality assurance
+Jalankan seluruh pengujian.
+Jalankan pengujian keamanan.
+Periksa akses lintas kelas.
+Uji beban sesuai target.
+Periksa dependensi.
+Periksa dokumentasi.
+Selesaikan bug kritis.
+Tahap 10 — Staging dan kesiapan produksi
+Deploy ke staging.
+Jalankan migrasi.
+Verifikasi konfigurasi.
+Jalankan smoke tests.
+Uji backup dan restore.
+Periksa observability.
+Buat checklist persetujuan produksi.
+
+Jangan melewati tahapan kritis hanya untuk menyatakan proyek selesai lebih cepat.
+
+38. ATURAN KERJA AI CODING AGENT
+
+Saat bekerja pada repositori:
+
+Audit kode yang sudah ada sebelum melakukan perubahan.
+Pertahankan implementasi yang masih benar dan relevan.
+Jangan menghapus fitur yang sudah berfungsi tanpa alasan teknis yang jelas.
+Jangan membuat ulang proyek dari nol apabila perubahan inkremental lebih aman.
+Implementasikan fitur dalam unit yang dapat diuji.
+Periksa seluruh dependency yang diperlukan.
+Jalankan perintah pengujian yang tersedia.
+Perbaiki error yang benar-benar ditemukan.
+Jangan menyembunyikan error dengan menonaktifkan pemeriksaan.
+Jangan menandai task selesai tanpa memeriksa hasilnya.
+Jangan membuat endpoint yang hanya mengembalikan respons sukses statis.
+Jangan mengganti database dengan data dalam memori untuk menyamarkan kegagalan integrasi.
+Jangan membuat kredensial atau akun administrator produksi secara diam-diam.
+Jangan mengeksekusi perubahan destruktif tanpa persetujuan yang diperlukan.
+Jangan mengklaim layanan eksternal aktif sebelum integrasinya diverifikasi.
+Dokumentasikan trade-off dan batasan yang belum terselesaikan.
+Laporkan pengujian yang lulus dan gagal secara terpisah.
+Jika ada fitur yang belum dapat diselesaikan, nyatakan status dan alasan secara spesifik.
+
+Apabila pekerjaan terlalu besar untuk diselesaikan dalam satu iterasi, lanjutkan secara terstruktur berdasarkan tahap implementasi. Jangan mengganti implementasi lengkap dengan mockup hanya karena cakupan proyek besar.
+
+39. FORMAT LAPORAN SETIAP TAHAP
+
+Pada akhir setiap tahap, laporkan:
+
+A. Implementasi
+
+Daftar fitur dan modul yang benar-benar telah dibuat atau diubah.
+
+B. File dan struktur
+
+Daftar file penting yang dibuat, diubah, atau dihapus.
+
+C. Database
+
+Migrasi, tabel, constraint, dan perubahan skema.
+
+D. API
+
+Endpoint baru atau perubahan kontrak API.
+
+E. Pengujian
+
+Perintah pengujian yang dijalankan, hasil aktual, dan kegagalan yang masih ada.
+
+F. Keamanan
+
+Kontrol keamanan yang telah diterapkan dan risiko yang masih terbuka.
+
+G. Integrasi eksternal
+
+Layanan yang telah terhubung dan layanan yang masih membutuhkan kredensial atau konfigurasi.
+
+H. Status penerimaan
+
+Kriteria yang telah dibuktikan, belum terpenuhi, atau belum diuji.
+
+I. Langkah berikutnya
+
+Daftar pekerjaan berikutnya berdasarkan prioritas dan dependensi.
+
+Jangan menyamakan “kode telah ditulis” dengan “fitur telah terverifikasi”.
+
+40. DEFINISI SELESAI
+
+Aplikasi hanya dapat dinyatakan siap produksi setelah:
+
+Seluruh fitur yang masuk ruang lingkup telah diimplementasikan.
+Seluruh alur kritis telah diuji.
+Tidak ada kerentanan kritis atau tinggi yang belum ditangani tanpa keputusan risiko yang terdokumentasi.
+Data persisten menggunakan layanan yang benar.
+Integrasi AI berjalan melalui backend.
+Hak akses diperiksa pada server.
+Materi akademik memiliki proses verifikasi.
+Penilaian dan penyimpanan konsisten.
+Tidak ada secret produksi dalam kode klien.
+Konfigurasi produksi telah diverifikasi.
+Backup dan pemulihan telah diuji.
+Monitoring dan penanganan error tersedia.
+Dokumentasi deployment lengkap.
+Seluruh pengujian wajib telah dijalankan dan hasilnya dilaporkan.
+Tidak ada klaim yang melampaui bukti implementasi.
+
+Status akhir harus dibedakan menjadi:
+
+Belum diimplementasikan.
+Sedang diimplementasikan.
+Implementasi selesai tetapi belum diuji.
+Lulus pengujian.
+Siap staging.
+Siap produksi setelah seluruh persyaratan operasional dan persetujuan terpenuhi.
+41. INSTRUKSI EKSEKUSI PERTAMA
+
+Mulailah dengan memeriksa repositori dan kemampuan lingkungan pengembangan yang tersedia.
+
+Jangan langsung membuat landing page sebelum memahami arsitektur dan kebutuhan sistem.
+
+Pertama, hasilkan:
+
+Ringkasan audit repositori.
+Daftar kebutuhan fungsional dan nonfungsional.
+Daftar asumsi yang perlu dikonfirmasi.
+Diagram arsitektur.
+ERD awal.
+Daftar modul frontend dan backend.
+Daftar endpoint dan kontrak data.
+Threat model awal.
+Strategi pengujian.
+Rencana implementasi berdasarkan dependensi.
+Daftar layanan eksternal dan konfigurasi yang diperlukan.
+Kriteria penerimaan per modul.
+
+Setelah itu, mulai implementasi tahap pertama dan jalankan pengujian yang relevan.
+
+Jika lingkungan memungkinkan pengembangan langsung, jangan berhenti pada dokumen perencanaan: lanjutkan membuat kode, mengonfigurasi layanan yang tersedia, menjalankan tes, memperbaiki masalah, dan mendokumentasikan hasil.
+
+Jika ada informasi penting yang belum tersedia, pisahkan keputusan yang dapat dibuat secara aman dari keputusan yang membutuhkan konfirmasi. Jangan mengarang konfigurasi atau mengklaim akses terhadap sumber yang tidak tersedia.
+
+HASIL AKHIR YANG DIHARAPKAN
+
+Hasil akhir harus berupa aplikasi Kuis Interaktif Biologi Kelas X yang:
+
+Memiliki frontend profesional dan responsif.
+Memiliki backend yang benar-benar berfungsi.
+Menggunakan database persisten.
+Memiliki autentikasi dan otorisasi yang benar.
+Memiliki bank soal dan kurikulum terstruktur.
+Memiliki mesin kuis dan penilaian yang konsisten.
+Memiliki dashboard dan analitik berbasis data aktual.
+Memiliki AI tutor dan generasi soal melalui backend.
+Memiliki keamanan dan perlindungan data siswa.
+Memiliki pengujian otomatis.
+Memiliki dokumentasi yang lengkap.
+Dapat dijalankan ulang oleh pengembang lain.
+Dapat dipersiapkan untuk staging dan produksi dengan prosedur yang terverifikasi.
+
+Prioritas tertinggi adalah kebenaran akademik, integritas data, keamanan, fungsionalitas nyata, dan kualitas pengalaman belajar.
+
+Mulai dengan audit repositori dan rencana teknis, lalu implementasikan aplikasi secara bertahap. Jangan membuat data palsu, jangan menyederhanakan fitur secara diam-diam, jangan menampilkan integrasi palsu, dan jangan menyatakan pekerjaan selesai tanpa bukti.

@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Kuis Interaktif Biologi Kelas X",
+  "description": "Platform pembelajaran dan asesmen interaktif Biologi SMA Kelas X dengan bank soal kurikulum terstruktur, evaluasi objektif dan uraian, analitik capaian kompetensi, serta asistensi AI tutor berbasis server.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
